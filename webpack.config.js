@@ -8,8 +8,9 @@ const { HotModuleReplacementPlugin } = require('webpack');
 const isProd = process.env.NODE_ENV === 'production';
 
 const fs = require('fs');
-const pages = fs.readdirSync(path.resolve(__dirname, 'src/pages'))
-  .filter(fileName => fileName.endsWith('.html'));
+const pages = fs
+  .readdirSync(path.resolve(__dirname, 'src/pages'))
+  .filter((fileName) => fileName.endsWith('.html'));
 
 module.exports = {
   entry: './src/scripts/app.ts',
@@ -27,14 +28,14 @@ module.exports = {
     filename: isProd ? '[name].[contenthash].js' : '[name].js',
     path: path.resolve(__dirname, 'build'),
     clean: true,
-    assetModuleFilename: 'assets/[hash][ext][query]'
+    assetModuleFilename: 'assets/[hash][ext][query]',
   },
   optimization: {
     minimizer: [
       '...', // Сохраняет стандартные минимизаторы
       new CssMinimizerPlugin(),
-      new TerserPlugin()
-    ]
+      new TerserPlugin(),
+    ],
   },
   module: {
     rules: [
@@ -43,10 +44,10 @@ module.exports = {
         use: {
           loader: 'ts-loader',
           options: {
-            configFile: path.resolve(__dirname, 'tsconfig.json')
-          }
+            configFile: path.resolve(__dirname, 'tsconfig.json'),
+          },
         },
-        exclude: /node_modules/
+        exclude: /node_modules/,
       },
       {
         test: /\.(scss|css)$/,
@@ -57,23 +58,23 @@ module.exports = {
             loader: 'postcss-loader',
             options: {
               postcssOptions: {
-                plugins: [['postcss-preset-env', { browsers: 'last 2 versions' }]]
-              }
-            }
+                plugins: [['postcss-preset-env', { browsers: 'last 2 versions' }]],
+              },
+            },
           },
-          'sass-loader'
-        ]
+          'sass-loader',
+        ],
       },
       {
         test: /\.(png|jpe?g|gif|webp|avif|svg)$/i,
-        type: 'asset/resource'
+        type: 'asset/resource',
       },
       {
         test: /\.(woff2?|eot|ttf|otf)$/i,
         type: 'asset/resource',
         generator: {
-          filename: 'assets/fonts/[name][ext]' // Сохраняет исходное имя файла
-        }
+          filename: 'assets/fonts/[name][ext]', // Сохраняет исходное имя файла
+        },
       },
       {
         test: /\.html$/i,
@@ -83,28 +84,29 @@ module.exports = {
             list: [
               // Обработка всех атрибутов src
               { tag: 'img', attribute: 'src', type: 'src' },
-              { tag: 'link', attribute: 'href', type: 'src' }
-            ]
-          }
-        }
-      }
-    ]
+              { tag: 'link', attribute: 'href', type: 'src' },
+            ],
+          },
+        },
+      },
+    ],
   },
   plugins: [
     new HotModuleReplacementPlugin(), // Добавляем плагин HMR
     new MiniCssExtractPlugin({
-      filename: isProd ? '[name].[contenthash].css' : '[name].css'
+      filename: isProd ? '[name].[contenthash].css' : '[name].css',
     }),
-    ...pages.map(page =>
-      new HtmlWebpackPlugin({
-        template: `./src/pages/${page}`,
-        filename: `${page.replace('.html', '')}.html`,
-        chunks: ['main'], // Подключаем главный бандл
-        inject: 'body' // Скрипты в конец body
-      })
-    )
+    ...pages.map(
+      (page) =>
+        new HtmlWebpackPlugin({
+          template: `./src/pages/${page}`,
+          filename: `${page.replace('.html', '')}.html`,
+          chunks: ['main'], // Подключаем главный бандл
+          inject: 'body', // Скрипты в конец body
+        }),
+    ),
   ],
   resolve: {
-    extensions: ['.ts', '.js']
-  }
+    extensions: ['.ts', '.js'],
+  },
 };

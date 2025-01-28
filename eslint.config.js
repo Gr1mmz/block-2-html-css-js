@@ -51,7 +51,7 @@ export default [
     ignores: ['build/**', 'node_modules/**'],
     rules: {
       // Ваши кастомные правила
-      'no-console': ["error", { "allow": ["warn", "error", "info"] }],
+      'no-console': ['error', { allow: ['warn', 'error', 'info'] }],
       'no-unused-vars': 'warn',
     },
   },
