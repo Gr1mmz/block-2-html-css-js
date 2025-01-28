@@ -2,8 +2,8 @@
   @font-face {
     font-family: $name;
     src:
-            url('#{$path}.woff2') format('woff2'),
-            url('#{$path}.woff') format('woff');
+      url('#{$path}.woff2') format('woff2'),
+      url('#{$path}.woff') format('woff');
     font-weight: $weight;
     font-style: $style;
     font-display: swap;
