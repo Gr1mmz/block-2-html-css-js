@@ -1,0 +1,73 @@
+# ================================
+# Основные исключения
+# ================================
+
+# Зависимости
+/node_modules
+/.pnp
+.pnp.js
+
+# Сборки и артефакты
+/dist
+/build
+/.cache
+/.temp
+
+# Логи
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# IDE
+/.idea
+/.vscode
+/.history
+*.sublime-workspace
+*.sublime-project
+
+# Системные файлы
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+# ================================
+# Языки и фреймворки
+# ================================
+
+# TypeScript
+*.tsbuildinfo
+
+# SASS
+.sass-cache
+
+# ================================
+# Тесты
+# ================================
+/coverage
+/.nyc_output
+
+# ================================
+# Окружение
+# ================================
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+
+# ================================
+# Дополнительно
+# ================================
+*.log
+*.tmp
+*.bak
+*.swp
+*.swo
+
+# Автогенерируемые файлы
+.cache-loader

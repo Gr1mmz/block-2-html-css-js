@@ -1,0 +1,10 @@
+@use 'variables' as *;
+
+* {
+  font-family: $font-main;
+}
+
+.heading {
+  font-size: 50px;
+  color: red;
+}
