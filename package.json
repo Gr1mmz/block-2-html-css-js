@@ -4,7 +4,10 @@
   "main": "index.js",
   "scripts": {
     "dev": "webpack serve --mode development --hot",
-    "build": "webpack --mode production"
+    "build": "webpack --mode production",
+    "lint": "eslint . --ext .ts,.js",
+    "format:check": "prettier --check .",
+    "format:write": "prettier --write ."
   },
   "keywords": [],
   "author": "",
