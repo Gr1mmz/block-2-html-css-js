@@ -7,7 +7,7 @@ on:
     branches: [ "main" ]
 
 env:
-  NODE_VERSION: 20 # Актуальная версия Node.js
+  NODE_VERSION: 22
 
 jobs:
   lint-and-test:
@@ -25,10 +25,10 @@ jobs:
         run: npm ci
 
       - name: Run ESLint
-        run: npm run lint # Добавьте скрипт "lint": "eslint ." в package.json
+        run: npm run lint
 
       - name: Run Prettier check
-        run: npm run format:check # Добавьте скрипт "format:check": "prettier --check ."
+        run: npm run format:check
 
   build:
     needs: lint-and-test
