@@ -3,18 +3,22 @@ name: 🧪 Visual Regression Test
 on:
   workflow_dispatch:
     inputs:
+      pr:
+        description: 'Номер Pull Request (например: 7)'
+        required: true
       task:
         description: 'ID задачи (например: BLOCK2-6)'
         required: true
-        default: 'BLOCK2-6'
 
 jobs:
   visual-test:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout репозитория
+      - name: Checkout кода из PR (merge-коммит)
         uses: actions/checkout@v4
+        with:
+          ref: refs/pull/${{ github.event.inputs.pr }}/merge
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -33,7 +37,7 @@ jobs:
       - name: Запуск визуального теста
         run: npx loki test
 
-      - name: Сохранение диффов (если есть отличия)
+      - name: Загрузка отличий (если они есть)
         if: failure()
         uses: actions/upload-artifact@v4
         with:
