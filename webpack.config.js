@@ -22,7 +22,10 @@ module.exports = {
     },
     hot: true, // Включение HMR
     open: true,
-    watchFiles: ['src/**/*'], // Слежение за всеми файлами
+    watchFiles: [
+      'src/pages/**/*.html',
+      'src/**/*',
+    ],// Слежение за всеми файлами
   },
   output: {
     filename: isProd ? '[name].[contenthash].js' : '[name].js',
