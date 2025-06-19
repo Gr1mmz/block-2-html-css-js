@@ -4,6 +4,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const { HotModuleReplacementPlugin } = require('webpack');
+const CopyPlugin = require('copy-webpack-plugin');
 
 const isProd = process.env.NODE_ENV === 'production';
 
@@ -22,7 +23,7 @@ module.exports = {
     },
     hot: true, // Включение HMR
     open: true,
-    watchFiles: ['src/**/*'], // Слежение за всеми файлами
+    watchFiles: ['src/pages/**/*.html', 'src/**/*'], // Слежение за всеми файлами
   },
   output: {
     filename: isProd ? '[name].[contenthash].js' : '[name].js',
@@ -105,6 +106,14 @@ module.exports = {
           inject: 'body', // Скрипты в конец body
         }),
     ),
+    new CopyPlugin({
+      patterns: [
+        {
+          from: path.resolve(__dirname, 'tests/reference'),
+          to: path.resolve(__dirname, 'build'),
+        },
+      ],
+    }),
   ],
   resolve: {
     extensions: ['.ts', '.js'],

@@ -1,0 +1,41 @@
+name: 🧪 Visual Regression Test
+
+on:
+  workflow_dispatch:
+    inputs:
+      task:
+        description: 'ID задачи (например: BLOCK2-6)'
+        required: true
+        default: 'BLOCK2-6'
+
+jobs:
+  visual-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout репозитория
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Установка зависимостей
+        run: npm ci
+
+      - name: Сборка проекта
+        run: npm run build
+
+      - name: Генерация loki.config.js
+        run: node tests/generate-loki-config.js ${{ github.event.inputs.task }}
+
+      - name: Запуск визуального теста
+        run: npx loki test
+
+      - name: Сохранение диффов (если есть отличия)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-diff-${{ github.event.inputs.task }}
+          path: .loki/difference/${{ github.event.inputs.task }}
