@@ -4,6 +4,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const { HotModuleReplacementPlugin } = require('webpack');
+const CopyPlugin = require('copy-webpack-plugin');
 
 const isProd = process.env.NODE_ENV === 'production';
 
@@ -108,6 +109,14 @@ module.exports = {
           inject: 'body', // Скрипты в конец body
         }),
     ),
+    new CopyPlugin({
+      patterns: [
+        {
+          from: path.resolve(__dirname, 'tests/reference'),
+          to: path.resolve(__dirname, 'build'),
+        },
+      ],
+    }),
   ],
   resolve: {
     extensions: ['.ts', '.js'],
