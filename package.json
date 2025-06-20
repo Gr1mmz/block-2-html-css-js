@@ -8,10 +8,7 @@
     "lint": "eslint src",
     "lint:fix": "eslint src --fix",
     "format:check": "prettier --check .",
-    "format:write": "prettier --write .",
-    "loki:generate": "node tests/generate-loki-config.js",
-    "loki:test": "npm run loki:generate && loki test",
-    "loki:reference": "npm run loki:generate && loki update"
+    "format:write": "prettier --write ."
   },
   "keywords": [],
   "author": "",
@@ -19,11 +16,13 @@
   "description": "",
   "devDependencies": {
     "@eslint/js": "^9.19.0",
+    "@playwright/test": "^1.53.1",
     "@types/node": "^22.12.0",
     "@types/webpack-env": "^1.18.7",
     "@typescript-eslint/eslint-plugin": "^8.22.0",
     "@typescript-eslint/parser": "^8.22.0",
     "chokidar": "^4.0.3",
+    "cross-env": "^7.0.3",
     "css-loader": "^7.1.2",
     "css-minimizer-webpack-plugin": "^7.0.0",
     "eslint": "^9.19.0",
