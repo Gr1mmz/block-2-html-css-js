@@ -16,10 +16,20 @@ env:
 jobs:
   visual-regression:
     runs-on: ubuntu-latest
-
+    permissions:
+      issues: write
     steps:
-      - name: Checkout repository
+      - name: Checkout test config only
         uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            tests/
+            playwright.config.ts
+            package.json
+            package-lock.json
+            tsconfig.json
+            scripts/
+            .github/
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -30,17 +40,20 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run Playwright visual tests
+      - name: Wait for deployed preview
+        run: node tests/wait-for-url.js "https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/pr-${{ github.event.inputs.pr_number }}/"
+
+      - name: Run Playwright tests
         env:
-          TASK_ID: ${{ github.event.inputs.task_id }}
           PR_NUMBER: ${{ github.event.inputs.pr_number }}
-          GITHUB_REPOSITORY_OWNER: ${{ github.repository_owner }}
+          TASK_ID: ${{ github.event.inputs.task_id }}
           GITHUB_REPOSITORY: ${{ github.repository }}
+          CI: true
         run: |
           npx playwright install --with-deps
-          npx playwright test tests/visual.test.ts
+          npx playwright test
 
-      - name: Upload test results
+      - name: Upload diffs
         if: always()
         uses: actions/upload-artifact@v4
         with:
