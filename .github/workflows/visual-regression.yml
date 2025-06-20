@@ -1,0 +1,48 @@
+name: Visual Regression
+
+on:
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: 'Номер Pull Request'
+        required: true
+      task_id:
+        description: 'ID задачи (например BLOCK2-1)'
+        required: true
+
+env:
+  NODE_VERSION: 22
+
+jobs:
+  visual-regression:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Playwright visual tests
+        env:
+          TASK_ID: ${{ github.event.inputs.task_id }}
+          PR_NUMBER: ${{ github.event.inputs.pr_number }}
+          GITHUB_REPOSITORY_OWNER: ${{ github.repository_owner }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          npx playwright install --with-deps
+          npx playwright test tests/visual.test.ts
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-diff-${{ github.event.inputs.task_id }}
+          path: test-results/
